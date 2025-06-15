@@ -21,29 +21,31 @@ export default function NoteList({ notes }: NoteListProps) {
 
   return (
     <ul className={css.list}>
-      {notes.map((note) => {
-        if (note.id) {
-          const { title, content, tag, id } = note;
-          return (
-            <li key={id} className={css.listItem}>
-              <h2 className={css.title}>{title}</h2>
-              <p className={css.content}>{content}</p>
-              <div className={css.footer}>
-                <span className={css.tag}>{tag}</span>
-                <button
-                  onClick={() => {
-                    removeItem(id);
-                  }}
-                  disabled={isPending}
-                  className={css.button}
-                >
-                  Delete
-                </button>
-              </div>
-            </li>
-          );
-        }
-      })}
+      {notes
+        // .filter((note) => note.id)
+        .map((note) => {
+          if (note.id) {
+            const { title, content, tag, id } = note;
+            return (
+              <li key={id} className={css.listItem}>
+                <h2 className={css.title}>{title}</h2>
+                <p className={css.content}>{content}</p>
+                <div className={css.footer}>
+                  <span className={css.tag}>{tag}</span>
+                  <button
+                    onClick={() => {
+                      removeItem(id);
+                    }}
+                    disabled={isPending}
+                    className={css.button}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </li>
+            );
+          }
+        })}
     </ul>
   );
 }

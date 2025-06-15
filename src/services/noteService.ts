@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Note } from "../types/note";
+import type { Note, NewNote } from "../types/note";
 
 interface ResponseGetData {
   notes: Note[];
@@ -7,7 +7,7 @@ interface ResponseGetData {
   page: number;
 }
 
-axios.defaults.baseURL = "https://notehub-public.goit.study/api/notes";
+axios.defaults.baseURL = "https://notehub-public.goit.study/api";
 const notehubToken = import.meta.env.VITE_NOTEHUB_TOKEN;
 
 const headers = {
@@ -20,7 +20,7 @@ export async function fetchNotes(
   perPage: number,
   searchText: string
 ): Promise<ResponseGetData> {
-  const { data } = await axios.get<ResponseGetData>("", {
+  const { data } = await axios.get<ResponseGetData>("/notes", {
     params: {
       page,
       perPage,
@@ -31,12 +31,12 @@ export async function fetchNotes(
   return data;
 }
 
-export async function createNote(newNote: Note): Promise<Note> {
-  const { data } = await axios.post<Note>("", newNote, { headers });
+export async function createNote(newNote: NewNote): Promise<Note> {
+  const { data } = await axios.post<Note>("/notes", newNote, { headers });
   return data;
 }
 
 export async function deleteNote(noteId: number): Promise<Note> {
-  const { data } = await axios.delete<Note>(`/${noteId}`, { headers });
+  const { data } = await axios.delete<Note>(`/notes/${noteId}`, { headers });
   return data;
 }
