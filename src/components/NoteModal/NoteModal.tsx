@@ -3,11 +3,11 @@ import css from "./NoteModal.module.css";
 import { createPortal } from "react-dom";
 import { useEffect } from "react";
 
-interface NoteFormProps {
+interface NoteModalProps {
   onClose: () => void;
 }
 
-export default function NoteModal({ onClose }: NoteFormProps) {
+export default function NoteModal({ onClose }: NoteModalProps) {
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";

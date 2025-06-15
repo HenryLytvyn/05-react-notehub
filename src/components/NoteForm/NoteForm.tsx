@@ -1,16 +1,17 @@
 import { Formik, Form, Field, type FormikHelpers, ErrorMessage } from "formik";
 import { useId } from "react";
 import css from "./NoteForm.module.css";
-import type { NoteProps } from "../../types/note";
+import type { Note } from "../../types/note";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNote } from "../../services/noteService";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+import { FormSchema } from "../../YupSchemes/FormSchema";
 
 interface NoteFormProps {
   onClose: () => void;
 }
 
-const initialValues: NoteProps = {
+const initialValues: Note = {
   title: "",
   content: "",
   tag: "Todo",
@@ -21,7 +22,7 @@ export default function NoteForm({ onClose }: NoteFormProps) {
   const queryClient = useQueryClient();
 
   const addNote = useMutation({
-    // mutationFn: (newNote: NoteProps) => createNotes(newNote),
+    // mutationFn: (newNote: Note) => createNotes(newNote),
     mutationFn: createNote,
     onSuccess: () => {
       onClose();
@@ -31,19 +32,19 @@ export default function NoteForm({ onClose }: NoteFormProps) {
     },
   });
 
-  function handleSubmit(values: NoteProps, actions: FormikHelpers<NoteProps>) {
+  function handleSubmit(values: Note, actions: FormikHelpers<Note>) {
     addNote.mutate(values);
     actions.resetForm();
   }
 
-  const FormSchema = Yup.object().shape({
-    title: Yup.string()
-      .min(3, "Title must be at least 3 characters")
-      .max(50, "Title is too long")
-      .required("Title is required"),
-    content: Yup.string().max(500, "The note is too long"),
-    tag: Yup.string().required("This field is required"),
-  });
+  // const FormSchema = Yup.object().shape({
+  //   title: Yup.string()
+  //     .min(3, "Title must be at least 3 characters")
+  //     .max(50, "Title is too long")
+  //     .required("Title is required"),
+  //   content: Yup.string().max(500, "The note is too long"),
+  //   tag: Yup.string().required("This field is required"),
+  // });
 
   return (
     <Formik
@@ -68,7 +69,7 @@ export default function NoteForm({ onClose }: NoteFormProps) {
           <Field
             id={`${fieldId}-content`}
             name="content"
-            rows="8"
+            rows={8}
             className={css.textarea}
             as="textarea"
           />
@@ -83,9 +84,7 @@ export default function NoteForm({ onClose }: NoteFormProps) {
             name="tag"
             className={css.select}
           >
-            <option value="Todo" defaultValue={"lalala"}>
-              Todo
-            </option>
+            <option value="Todo">Todo</option>
             <option value="Work">Work</option>
             <option value="Personal">Personal</option>
             <option value="Meeting">Meeting</option>
